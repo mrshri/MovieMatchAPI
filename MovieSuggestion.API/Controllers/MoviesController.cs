@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieSuggestion.Application.DTOs;
+using MovieSuggestion.Application.Models;
 using MovieSuggestion.Application.Services;
 using MovieSuggestion.Domain.Entities;
 
@@ -20,17 +21,17 @@ namespace MovieSuggestion.API.Controllers
         public async Task<IActionResult> GetAllMovies()
         {
             var movies  =  await _movieService.GetAllMoviesAsync();
-            return Ok(movies);
+            return Ok(ApiResponse<IEnumerable<MovieDTO>>.SuccessResponse(movies, "Movies fetched successfully"));
         }
 
         [HttpGet("id")]
         public async Task<IActionResult> GetMovieById(int id)
         {
             var movie = await _movieService.GetMovieByIdAsync(id);
-            if (movie == null) {
-                return NotFound(new { Message = $"Movie with ID {id} not found" });
-            }
-            return Ok(movie);
+            if (movie == null)
+                return NotFound(ApiResponse<string>.FailureResponse($"Movie with ID {id} not found"));
+
+            return Ok(ApiResponse<MovieDTO>.SuccessResponse(movie, "Movie fetched successfully"));
         }
 
         [HttpPost]
@@ -38,11 +39,12 @@ namespace MovieSuggestion.API.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
-            }
-             await _movieService.AddMovieAsync(movieDto);
+                return BadRequest(ApiResponse<string>.FailureResponse("Validation failed"));
 
-            return Ok(new { Message = "Movie added successfully!" });
+            }
+            await _movieService.AddMovieAsync(movieDto);
+
+            return Ok(ApiResponse<string>.SuccessResponse("Movie added successfully"));
         }
     }
 }
