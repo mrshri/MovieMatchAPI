@@ -1,4 +1,10 @@
 
+using Microsoft.EntityFrameworkCore;
+using MovieSuggestion.Application.Services;
+using MovieSuggestion.Infrastructure.DATA;
+using MovieSuggestion.Infrastructure.Repositories;
+using MovieSuggestion.Infrastructure.Repositories.Interfaces;
+
 namespace MovieSuggestion.API
 {
     public class Program
@@ -13,6 +19,15 @@ namespace MovieSuggestion.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            //DATABASE Connection
+            builder.Services.AddDbContext<ApplicationDbContext>(option =>
+            option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            //add services & repositories
+            builder.Services.AddScoped<IMovieService, MovieService>();
+
+           builder.Services.AddScoped<IMovieRepository,MovieRepository>();
 
             var app = builder.Build();
 
