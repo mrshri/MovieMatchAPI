@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MovieSuggestion.Application.DTOs;
 using MovieSuggestion.Application.Services;
 using MovieSuggestion.Domain.Entities;
 
@@ -27,17 +28,21 @@ namespace MovieSuggestion.API.Controllers
         {
             var movie = await _movieService.GetMovieByIdAsync(id);
             if (movie == null) {
-                return NotFound("No Records Available!");
+                return NotFound(new { Message = $"Movie with ID {id} not found" });
             }
             return Ok(movie);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMovie(Movie movie)
+        public async Task<IActionResult> AddMovie([FromBody]MovieCreateDTO movieDto)
         {
-             await _movieService.AddMovieAsync(movie);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+             await _movieService.AddMovieAsync(movieDto);
 
-            return CreatedAtAction(nameof(GetMovieById), new {id=movie.Id},movie);
+            return Ok(new { Message = "Movie added successfully!" });
         }
     }
 }

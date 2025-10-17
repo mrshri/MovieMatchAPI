@@ -1,4 +1,5 @@
-﻿using MovieSuggestion.Domain.Entities;
+﻿using MovieSuggestion.Application.DTOs;
+using MovieSuggestion.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace MovieSuggestion.Application.Services
 {
      public interface IMovieService
     {
-        Task<IEnumerable<Movie>> GetAllMoviesAsync();
-        Task<Movie?> GetMovieByIdAsync(int id);
-        Task AddMovieAsync(Movie movie);
+        Task<IEnumerable<MovieDTO>> GetAllMoviesAsync();
+        Task<MovieDTO?> GetMovieByIdAsync(int id);
+        Task AddMovieAsync(MovieCreateDTO movie);
     }
 }

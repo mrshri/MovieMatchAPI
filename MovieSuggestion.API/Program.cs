@@ -1,5 +1,6 @@
-
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MovieSuggestion.Application;
 using MovieSuggestion.Application.Services;
 using MovieSuggestion.Infrastructure.DATA;
 using MovieSuggestion.Infrastructure.Repositories;
@@ -28,6 +29,9 @@ namespace MovieSuggestion.API
             builder.Services.AddScoped<IMovieService, MovieService>();
 
            builder.Services.AddScoped<IMovieRepository,MovieRepository>();
+
+            //configure AutoMapper
+            builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());     
 
             var app = builder.Build();
 
