@@ -5,6 +5,7 @@ using MovieSuggestion.Application.Services;
 using MovieSuggestion.Infrastructure.DATA;
 using MovieSuggestion.Infrastructure.Repositories;
 using MovieSuggestion.Infrastructure.Repositories.Interfaces;
+using Serilog;
 
 namespace MovieSuggestion.API
 {
@@ -13,6 +14,14 @@ namespace MovieSuggestion.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            //configure Serilog
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File("logs/moviesuggestion_log.txt", rollingInterval: RollingInterval.Day)
+                .Enrich.FromLogContext()
+                .CreateLogger();
+            builder.Host.UseSerilog();
 
             // Add services to the container.
 
@@ -35,6 +44,9 @@ namespace MovieSuggestion.API
 
             var app = builder.Build();
 
+            // Adding Global Exception Middleware
+            app.UseMiddleware<GlobalExceptionMiddleware>();
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -49,7 +61,16 @@ namespace MovieSuggestion.API
 
             app.MapControllers();
 
-            app.Run();
+            try
+            {
+                Log.Information("Starting MovieSuggestion  API...");
+                app.Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "MovieSuggestion API terminated unexpectedly!");
+
+            }
         }
     }
 }
