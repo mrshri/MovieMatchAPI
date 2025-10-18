@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using MovieSuggestion.API.Filter;
 using MovieSuggestion.Application;
 using MovieSuggestion.Application.Services;
 using MovieSuggestion.Infrastructure.DATA;
@@ -25,7 +27,10 @@ namespace MovieSuggestion.API
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(Options =>
+            {
+                Options.Filters.Add<ValidationFilter>(); //VALIDATION FILTER added globally
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
