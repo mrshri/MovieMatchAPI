@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using MovieSuggestion.API.Filter;
 using MovieSuggestion.Application;
 using MovieSuggestion.Application.Services;
@@ -25,15 +24,21 @@ namespace MovieSuggestion.API
                 .CreateLogger();
             builder.Host.UseSerilog();
 
-            // Add services to the container.
-
             builder.Services.AddControllers(Options =>
             {
                 Options.Filters.Add<ValidationFilter>(); //VALIDATION FILTER added globally
             });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "MovieSuggestion API",
+                    Version = "v1",
+                    Description = "An ASP.NET Core Web API for suggesting movies based on user preferences.",
+                });
+            });
 
             //DATABASE Connection
             builder.Services.AddDbContext<ApplicationDbContext>(option =>
