@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieSuggestion.API", "MovieSuggestion.API\MovieSuggestion.API.csproj", "{3DBD8038-EE57-4BA6-94B0-4DA74EFFB592}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieSuggestion.Infrastructure", "MovieSuggestion.Infrastructure\MovieSuggestion.Infrastructure.csproj", "{A1F31D61-9879-4780-B98A-2A62A1BE2B1E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieSuggestion.Domain", "MovieSuggestion.Domain\MovieSuggestion.Domain.csproj", "{FD18A240-A870-47A6-8B5F-73581D91A3E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieSuggestion.AuthApi", "MovieSuggestion.AuthApi\MovieSuggestion.AuthApi.csproj", "{961E5E56-A229-4FC5-A26E-13412D50A6DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FD18A240-A870-47A6-8B5F-73581D91A3E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD18A240-A870-47A6-8B5F-73581D91A3E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD18A240-A870-47A6-8B5F-73581D91A3E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{961E5E56-A229-4FC5-A26E-13412D50A6DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{961E5E56-A229-4FC5-A26E-13412D50A6DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{961E5E56-A229-4FC5-A26E-13412D50A6DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{961E5E56-A229-4FC5-A26E-13412D50A6DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
