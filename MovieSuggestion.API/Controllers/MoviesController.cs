@@ -6,7 +6,7 @@ using MovieSuggestion.Application.Services;
 
 namespace MovieSuggestion.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/movies")]
     [ApiController]
     public class MoviesController : ControllerBase
     {
@@ -23,7 +23,7 @@ namespace MovieSuggestion.API.Controllers
         public async Task<IActionResult> GetAllMovies()
         {
 
-            var movies  =  await _movieService.GetAllMoviesAsync();
+            var movies = await _movieService.GetAllMoviesAsync();
             _logger.LogInformation("Fetched {Count} movies", movies.Count());
             return Ok(ApiResponse<IEnumerable<MovieDTO>>.SuccessResponse(movies, "Movies fetched successfully"));
         }
@@ -40,7 +40,7 @@ namespace MovieSuggestion.API.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddMovie([FromBody]MovieCreateDTO movieDto)
+        public async Task<IActionResult> AddMovie([FromBody] MovieCreateDTO movieDto)
         {
             if (!ModelState.IsValid)
             {
@@ -74,6 +74,18 @@ namespace MovieSuggestion.API.Controllers
             }
             await _movieService.DeleteMovieAsync(movieDto);
             return Ok(ApiResponse<string>.SuccessResponse("Movie deleted successfully"));
+        }
+
+        [HttpPost("recommend")]
+        [Authorize]
+        public async Task<IActionResult> GetMovieRecommendations([FromBody] MovieRecommendationRequestDto requestDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ApiResponse<string>.FailureResponse("Validation failed"));
+            }
+            var recommendations = await _movieService.GetRecommendationsAsync(requestDto);
+            return Ok(ApiResponse<IEnumerable<MovieRecommendationResponseDto>>.SuccessResponse(recommendations, "Recommendations fetched successfully"));
         }
     }
 }

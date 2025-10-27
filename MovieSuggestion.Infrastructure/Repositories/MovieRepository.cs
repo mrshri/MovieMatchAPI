@@ -37,6 +37,24 @@ namespace MovieSuggestion.Infrastructure.Repositories
             return await _context.Movies.FindAsync(id);
         }
 
+        public async Task<IEnumerable<Movie>> GetRecommendedMoviesAsync(string genre, string? keyword)
+        {
+            var query = _context.Movies.AsQueryable();
+
+            if (!string.IsNullOrEmpty(genre) || !string.IsNullOrEmpty(keyword))
+            {
+                query = query.Where(m =>
+                    (string.IsNullOrEmpty(genre) || m.Genre.ToLower() == genre.ToLower()) ||
+                    (string.IsNullOrEmpty(keyword) ||
+                     m.Title.ToLower().Contains(keyword.ToLower()) ||
+                     m.Description.ToLower().Contains(keyword.ToLower()))
+                );
+            }
+
+
+            return await query.Take(10).ToListAsync();
+        }
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
