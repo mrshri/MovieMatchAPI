@@ -2,8 +2,9 @@
 
 namespace MovieSuggestion.Application.DTOs
 {
-    public class MovieCreateDTO
+    public class MovieUpdateDto
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Title is required")]
         [StringLength(100, ErrorMessage = "Title can't exceed 100 characters")]
         public string Title { get; set; } = string.Empty;

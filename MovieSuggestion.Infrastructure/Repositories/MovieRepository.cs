@@ -2,11 +2,6 @@
 using MovieSuggestion.Domain.Entities;
 using MovieSuggestion.Infrastructure.DATA;
 using MovieSuggestion.Infrastructure.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MovieSuggestion.Infrastructure.Repositories
 {
@@ -23,6 +18,15 @@ namespace MovieSuggestion.Infrastructure.Repositories
             await _context.Movies.AddAsync(movie);
         }
 
+        public async Task DeleteAsync(Movie movie)
+        {
+            var existingMovie = await _context.Movies.FindAsync(movie.Id);
+            if (existingMovie != null)
+            {
+                _context.Movies.Remove(existingMovie);
+            }
+        }
+
         public async Task<IEnumerable<Movie>> GetAllAsync()
         {
            return await _context.Movies.ToListAsync();
@@ -36,6 +40,15 @@ namespace MovieSuggestion.Infrastructure.Repositories
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Movie movie)
+        {
+            var existingMovie = await _context.Movies.AsNoTracking().FirstOrDefaultAsync(m => m.Id == movie.Id);
+            if (existingMovie != null)
+            {
+                _context.Entry(movie).State = EntityState.Modified;
+            }
         }
     }
 }
