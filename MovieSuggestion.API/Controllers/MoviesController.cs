@@ -20,7 +20,6 @@ namespace MovieSuggestion.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllMovies()
         {
 
@@ -30,7 +29,6 @@ namespace MovieSuggestion.API.Controllers
         }
 
         [HttpGet("id")]
-        [Authorize]
         public async Task<IActionResult> GetMovieById(int id)
         {
             var movie = await _movieService.GetMovieByIdAsync(id);
@@ -52,6 +50,30 @@ namespace MovieSuggestion.API.Controllers
             await _movieService.AddMovieAsync(movieDto);
 
             return Ok(ApiResponse<string>.SuccessResponse("Movie added successfully"));
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> UpdateMovie([FromBody] MovieUpdateDto movieDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ApiResponse<string>.FailureResponse("Validation failed"));
+            }
+            await _movieService.UpdateMovieAsync(movieDto);
+            return Ok(ApiResponse<string>.SuccessResponse("Movie updated successfully"));
+        }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeleteMovie([FromBody] MovieDeleteDto movieDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ApiResponse<string>.FailureResponse("Validation failed"));
+            }
+            await _movieService.DeleteMovieAsync(movieDto);
+            return Ok(ApiResponse<string>.SuccessResponse("Movie deleted successfully"));
         }
     }
 }

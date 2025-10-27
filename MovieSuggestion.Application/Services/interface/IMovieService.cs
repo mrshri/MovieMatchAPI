@@ -1,10 +1,4 @@
 ﻿using MovieSuggestion.Application.DTOs;
-using MovieSuggestion.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MovieSuggestion.Application.Services
 {
@@ -13,5 +7,7 @@ namespace MovieSuggestion.Application.Services
         Task<IEnumerable<MovieDTO>> GetAllMoviesAsync();
         Task<MovieDTO?> GetMovieByIdAsync(int id);
         Task AddMovieAsync(MovieCreateDTO movie);
-     }
+        Task UpdateMovieAsync(MovieUpdateDto movie);
+        Task DeleteMovieAsync(MovieDeleteDto movie);
+    }
 }

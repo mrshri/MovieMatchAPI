@@ -2,11 +2,6 @@
 using MovieSuggestion.Application.DTOs;
 using MovieSuggestion.Domain.Entities;
 using MovieSuggestion.Infrastructure.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MovieSuggestion.Application.Services
 {
@@ -27,6 +22,16 @@ namespace MovieSuggestion.Application.Services
             await _repo.SaveChangesAsync();
         }
 
+        public async Task DeleteMovieAsync(MovieDeleteDto movie)
+        {
+            var movieEntity = await _repo.GetByIdAsync(movie.Id);
+            if (movieEntity != null)
+            {
+                await _repo.DeleteAsync(movieEntity);
+                await _repo.SaveChangesAsync();
+            }
+        }
+
         public async Task<IEnumerable<MovieDTO>> GetAllMoviesAsync()
         {
             var movies =  await _repo.GetAllAsync();
@@ -37,6 +42,17 @@ namespace MovieSuggestion.Application.Services
         {
            var movie = await _repo.GetByIdAsync(id);
             return _mapper.Map<MovieDTO?>(movie);
+        }
+
+        public async Task UpdateMovieAsync(MovieUpdateDto movie)
+        {
+            var movieEntity = await _repo.GetByIdAsync(movie.Id);
+            if (movieEntity != null)
+            {
+                _mapper.Map(movie, movieEntity);
+                await _repo.UpdateAsync(movieEntity);
+                await _repo.SaveChangesAsync();
+            }
         }
     }
 }
