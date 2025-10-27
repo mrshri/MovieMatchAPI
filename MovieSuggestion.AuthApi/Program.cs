@@ -49,6 +49,7 @@ namespace MovieSuggestion.AuthApi
             }
 
             app.UseHttpsRedirection();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
