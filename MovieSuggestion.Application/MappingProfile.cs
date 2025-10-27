@@ -11,6 +11,7 @@ namespace MovieSuggestion.Application
             CreateMap<Movie, MovieDTO>();
             CreateMap<MovieCreateDTO, Movie>();
             CreateMap<MovieUpdateDto, Movie>();
+            CreateMap<Movie,MovieRecommendationResponseDto>();
         }
     }
 }

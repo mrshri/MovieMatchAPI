@@ -44,6 +44,12 @@ namespace MovieSuggestion.Application.Services
             return _mapper.Map<MovieDTO?>(movie);
         }
 
+        public async Task<IEnumerable<MovieRecommendationResponseDto>> GetRecommendationsAsync(MovieRecommendationRequestDto request)
+        {
+            var movies = await  _repo.GetRecommendedMoviesAsync(request.Genre, request.Keyword);
+            return _mapper.Map<IEnumerable<MovieRecommendationResponseDto>>(movies);
+        }
+
         public async Task UpdateMovieAsync(MovieUpdateDto movie)
         {
             var movieEntity = await _repo.GetByIdAsync(movie.Id);

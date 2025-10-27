@@ -9,6 +9,7 @@ namespace MovieSuggestion.Infrastructure.Repositories.Interfaces
         Task AddAsync(Movie movie);
         Task UpdateAsync(Movie movie);
         Task DeleteAsync(Movie movie);
+        Task<IEnumerable<Movie>> GetRecommendedMoviesAsync(string genre,string?keyword);
         Task SaveChangesAsync();
     }
 }
