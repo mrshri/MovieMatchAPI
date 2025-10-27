@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieSuggestion.Application.DTOs;
 using MovieSuggestion.Application.Models;
 using MovieSuggestion.Application.Services;
-using MovieSuggestion.Domain.Entities;
 
 namespace MovieSuggestion.API.Controllers
 {
@@ -12,19 +11,26 @@ namespace MovieSuggestion.API.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly IMovieService _movieService;
-        public MoviesController(IMovieService movieService)
+        private readonly ILogger<MoviesController> _logger;
+
+        public MoviesController(IMovieService movieService, ILogger<MoviesController> logger)
         {
-                _movieService = movieService;
+            _movieService = movieService;
+            _logger = logger;
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllMovies()
         {
+
             var movies  =  await _movieService.GetAllMoviesAsync();
+            _logger.LogInformation("Fetched {Count} movies", movies.Count());
             return Ok(ApiResponse<IEnumerable<MovieDTO>>.SuccessResponse(movies, "Movies fetched successfully"));
         }
 
         [HttpGet("id")]
+        [Authorize]
         public async Task<IActionResult> GetMovieById(int id)
         {
             var movie = await _movieService.GetMovieByIdAsync(id);
@@ -35,6 +41,7 @@ namespace MovieSuggestion.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddMovie([FromBody]MovieCreateDTO movieDto)
         {
             if (!ModelState.IsValid)
