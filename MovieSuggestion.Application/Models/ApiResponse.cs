@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MovieSuggestion.Application.Models
+﻿namespace MovieSuggestion.Application.Models
 {
     public class ApiResponse<T>
     {

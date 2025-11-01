@@ -60,5 +60,22 @@ namespace MovieSuggestion.Application.Services
                 await _repo.SaveChangesAsync();
             }
         }
+
+        public async Task<MovieDTO> PatchMovieAsync(MoviePatchDto movieDto)
+        {
+            var movie = await _repo.GetByIdAsync(movieDto.Id);
+
+            if (movie == null)
+            {
+                throw new KeyNotFoundException($"Movie with ID {movieDto.Id} not found.");
+            }
+
+            _mapper.Map(movieDto, movie);
+
+            await _repo.UpdateAsync(movie);
+            await _repo.SaveChangesAsync();
+
+            return _mapper.Map<MovieDTO>(movie);
+        }
     }
 }
