@@ -10,5 +10,6 @@ namespace MovieSuggestion.Application.Services
         Task UpdateMovieAsync(MovieUpdateDto movie);
         Task DeleteMovieAsync(MovieDeleteDto movie);
         Task<IEnumerable<MovieRecommendationResponseDto>> GetRecommendationsAsync(MovieRecommendationRequestDto request);
+        Task<MovieDTO> PatchMovieAsync(MoviePatchDto movieDto);
     }
 }

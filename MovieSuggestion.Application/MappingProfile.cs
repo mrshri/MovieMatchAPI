@@ -12,6 +12,8 @@ namespace MovieSuggestion.Application
             CreateMap<MovieCreateDTO, Movie>();
             CreateMap<MovieUpdateDto, Movie>();
             CreateMap<Movie,MovieRecommendationResponseDto>();
+            CreateMap<MoviePatchDto,Movie>()
+                .ForAllMembers(opt => opt.Condition((src,dest,srcMember)=>srcMember != null));
         }
     }
 }

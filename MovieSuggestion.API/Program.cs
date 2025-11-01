@@ -1,5 +1,8 @@
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MovieSuggestion.API.Filter;
@@ -32,16 +35,42 @@ namespace MovieSuggestion.API
             {
                 Options.Filters.Add<ValidationFilter>(); //VALIDATION FILTER added globally
             });
+
+
+            //Handling API Versioning
+            builder.Services.AddApiVersioning(options =>
+            {
+                // Default API version (if client doesn't specify)
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+
+                // Assume default version when unspecified
+                options.AssumeDefaultVersionWhenUnspecified = true;
+
+                // Report supported versions in response headers
+                options.ReportApiVersions = true;
+            }).AddApiExplorer(options =>
+            {
+                // Add version info in Swagger
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                var provider = builder.Services.BuildServiceProvider()
+                .GetRequiredService<IApiVersionDescriptionProvider>();
+
+                foreach (var description in provider.ApiVersionDescriptions)
                 {
-                    Title = "MovieSuggestion API",
-                    Version = "v1",
-                    Description = "An ASP.NET Core Web API for suggesting movies based on user preferences.",
-                });
+                    c.SwaggerDoc(description.GroupName, new OpenApiInfo
+                    {
+                        Title = "MovieSuggestion API",
+                        Version = description.ApiVersion.ToString(),
+                        Description = "An ASP.NET Core Web API for suggesting movies."
+                    });
+                }
                 c.AddSecurityDefinition(name: JwtBearerDefaults.AuthenticationScheme, securityScheme: new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -103,12 +132,23 @@ namespace MovieSuggestion.API
 
             // Adding Global Exception Middleware
             app.UseMiddleware<GlobalExceptionMiddleware>();
+            var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(
+                    options =>
+                    {
+                        foreach (var description in provider.ApiVersionDescriptions)
+                        {
+                            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+                                description.GroupName.ToUpperInvariant());
+                        }
+                    }
+                    );
             }
 
             app.UseHttpsRedirection();

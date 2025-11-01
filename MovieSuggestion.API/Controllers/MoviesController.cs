@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieSuggestion.Application.DTOs;
 using MovieSuggestion.Application.Models;
@@ -6,7 +7,8 @@ using MovieSuggestion.Application.Services;
 
 namespace MovieSuggestion.API.Controllers
 {
-    [Route("api/movies")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/movies")]
     [ApiController]
     public class MoviesController : ControllerBase
     {
@@ -74,18 +76,6 @@ namespace MovieSuggestion.API.Controllers
             }
             await _movieService.DeleteMovieAsync(movieDto);
             return Ok(ApiResponse<string>.SuccessResponse("Movie deleted successfully"));
-        }
-
-        [HttpPost("recommend")]
-        [Authorize]
-        public async Task<IActionResult> GetMovieRecommendations([FromBody] MovieRecommendationRequestDto requestDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ApiResponse<string>.FailureResponse("Validation failed"));
-            }
-            var recommendations = await _movieService.GetRecommendationsAsync(requestDto);
-            return Ok(ApiResponse<IEnumerable<MovieRecommendationResponseDto>>.SuccessResponse(recommendations, "Recommendations fetched successfully"));
         }
     }
 }
