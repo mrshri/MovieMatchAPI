@@ -1,105 +1,84 @@
-MovieMatchAPI
+# MovieMatchAPI
 
-MovieMatchAPI is a movie recommendation and suggestion web API built with ASP.NET Core. It provides RESTful endpoints for retrieving movie suggestions and related data, organized using a layered architecture for maintainability and testability.
+MovieMatchAPI is a production-ready movie recommendation Web API built using ASP.NET Core.  
+The project demonstrates clean architecture, secure authentication, and scalable backend design suitable for real-world enterprise applications.
 
-Features
+## Why This Project?
 
-Movie suggestion/recommendation REST API
+This project was built to showcase:
+- Strong backend development skills in ASP.NET Core
+- Clean architecture and separation of concerns
+- Secure API design with JWT authentication
+- Scalable, maintainable, and testable code structure
 
-Modular layered solution structure (API, Application, Domain, Infrastructure)
+## Key Highlights
 
-Authentication and authorization support via a dedicated Auth API
+- Designed and developed RESTful APIs for movie suggestions and related operations  
+- Implemented clean layered architecture (API, Application, Domain, Infrastructure)  
+- Secured endpoints using JWT-based authentication and authorization  
+- Used Entity Framework Core with repository pattern for data access  
+- Applied DTOs and dependency injection to improve maintainability and scalability  
 
-Clean architecture with separation of concerns
+## Architecture Overview
 
-DTOs and dependency injection for scalability
+The solution follows Clean Architecture principles:
 
-Entity Framework Core for data access
-
-Project Structure
 MovieMatchAPI/
-│
-├── MovieSuggestion.API           # Web API project
-├── MovieSuggestion.Application   # Business logic layer
-├── MovieSuggestion.Domain        # Domain models and interfaces
-├── MovieSuggestion.Infrastructure# Data access, EF Core, repositories
-├── MovieSuggestion.AuthApi       # Authentication API
-├── MovieSuggestionAPI.sln        # Solution file
-├── .gitignore
-└── README.md
+- MovieSuggestion.API – API controllers and request handling  
+- MovieSuggestion.Application – Business logic and services  
+- MovieSuggestion.Domain – Core domain models and interfaces  
+- MovieSuggestion.Infrastructure – EF Core, repositories, database context  
+- MovieSuggestion.AuthApi – Authentication and authorization  
 
-Getting Started
-Prerequisites
+This structure ensures loose coupling and easy extensibility.
 
-Make sure you have the following installed:
+## Technologies Used
 
-.NET SDK (recommended latest 7.x/8.x)
+- ASP.NET Core Web API  
+- C#  
+- Entity Framework Core  
+- SQL Server  
+- JWT Authentication  
+- Dependency Injection  
 
-SQL Server or any supported relational database
+## Sample API Endpoints
 
-(Optional) Postman or similar tool for testing APIs
+| Endpoint | Method | Description |
+|--------|--------|-------------|
+| /api/movies | GET | Fetch movie suggestions |
+| /api/movies/{id} | GET | Get movie details |
+| /api/auth/login | POST | User authentication |
+| /api/auth/register | POST | User registration |
 
-Setup
+## How to Run Locally
 
-Clone the repository
-
+1. Clone the repository
 git clone https://github.com/mrshri/MovieMatchAPI.git
+
 cd MovieMatchAPI
+2. Update the database connection string in `appsettings.json`
 
-
-Configure Database Connection
-
-Open appsettings.json in MovieSuggestion.API
-
-Add your database connection string under ConnectionStrings
-
-Run Database Migrations
-
+3. Apply migrations
 dotnet ef database update --project MovieSuggestion.Infrastructure
 
 
-Run the Application
+4. Run the API
+
 
 dotnet run --project MovieSuggestion.API
 
 
-The API will be available at https://localhost:5001 (or similar).
+## Learning Outcomes
 
-API Endpoints
-Endpoint	Method	Description
-/api/movies	GET	Retrieve movie suggestions/list
-/api/movies/{id}	GET	Get movie details by ID
-/api/auth/login	POST	Authenticate a user and get a token
-/api/auth/register	POST	Register a new user
+- Hands-on experience with clean architecture in ASP.NET Core  
+- Practical implementation of JWT authentication  
+- Designing scalable REST APIs  
+- Applying enterprise-level coding standards  
 
-Note: Update this section with actual endpoints once routes and controllers are finalized in code.
+## Future Enhancements
 
-Authentication
-
-The API uses JWT tokens for securing endpoints. Call the Auth API to obtain a token, then include it in request headers:
-
-Authorization: Bearer <your_token_here>
-
-Technologies Used
-
-ASP.NET Core Web API
-
-C#
-
-Entity Framework Core
-
-SQL Server (or any supported RDBMS)
-
-JWT Authentication
-
-Contributing
-
-Contributions are welcome! To contribute:
-
-Fork the repository
-
-Create a feature branch
-
-Commit your changes
-
-Open a pull request
+- Advanced recommendation algorithms  
+- Pagination, sorting, and filtering  
+- Swagger/OpenAPI documentation  
+- Unit and integration testing  
+- Integration with external movie data APIs  
